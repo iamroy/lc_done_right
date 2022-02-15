@@ -21,6 +21,7 @@ class MinStack:
         current_min = self.stack[-1][1]
         self.stack.append((val, min(val, current_min)))
 
+    def pop(self) -> None:
         if not self.stack:
             return
         self.stack.pop()
