@@ -1,5 +1,6 @@
 #136. Single Number
 #155. Min Stack
+#70. Climbing Stairs
 
 
 #136. Single Number
@@ -36,6 +37,24 @@ class MinStack:
             return
         return self.stack[-1][1]
 
+
+#70. Climbing Stairs
+def climb_stairs(n):
+    if n <= 2:
+        return n
+
+    dp = [0] * (n + 1)
+    dp[0] = 0
+    dp[1] = 1
+    dp[2] = 2
+
+    i = 3
+    while i <= n:
+        dp[i] = dp[i - 1] + dp[i - 2]
+        i += 1
+    return dp[n]
+
+
 if __name__ == '__main__':
     nums = [2, 2, 1]
     print(single_number(nums))
@@ -45,3 +64,4 @@ if __name__ == '__main__':
     obj.pop()
     param_3 = obj.top()
     param_4 = obj.getMin()
+    print(climb_stairs(45))
