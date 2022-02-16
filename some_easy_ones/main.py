@@ -2,7 +2,9 @@
 #155. Min Stack
 #70. Climbing Stairs
 #206. Reverse Linked List
+#169. Majority Element
 
+from collections import Counter
 
 #136. Single Number
 def single_number(nums):
@@ -115,6 +117,15 @@ def climb_stairs(n):
         i += 1
     return dp[n]
 
+#169. Majority Element
+
+def majority_element_hash_map(nums):
+    counts = Counter(nums)
+    return max(counts.keys(), key=counts.get)
+
+def majority_element_sorted(nums):
+    nums = sorted(nums)
+    return nums[len(nums) // 2]
 
 if __name__ == '__main__':
     nums = [2, 2, 1]
@@ -138,3 +149,5 @@ if __name__ == '__main__':
     myLinkedList.reverseList()
     print("Reversed Linked List")
     myLinkedList.print_linked_list()
+    nums = [-1,1,1,1,2,1]
+    print(majority_element(nums))
