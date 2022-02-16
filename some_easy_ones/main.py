@@ -3,8 +3,10 @@
 #70. Climbing Stairs
 #206. Reverse Linked List
 #169. Majority Element
+#35. Search Insert Position
 
 from collections import Counter
+import math
 
 #136. Single Number
 def single_number(nums):
@@ -81,25 +83,7 @@ class LinkedList:
             temp = temp.next
         print("None")
 
-    def reverseList(self):
-        if not self.head:
-            return
 
-        if self.head.next is None:
-            return
-
-        curr_node = self.head
-        prev_node = None
-
-        while curr_node.next:
-            next_node = curr_node.next
-            curr_node.next = prev_node
-            prev_node = curr_node
-            curr_node = next_node
-
-        curr_node.next = prev_node
-
-        self.head = curr_node
 
 #70. Climbing Stairs
 def climb_stairs(n):
@@ -118,7 +102,6 @@ def climb_stairs(n):
     return dp[n]
 
 #169. Majority Element
-
 def majority_element_hash_map(nums):
     counts = Counter(nums)
     return max(counts.keys(), key=counts.get)
@@ -127,27 +110,55 @@ def majority_element_sorted(nums):
     nums = sorted(nums)
     return nums[len(nums) // 2]
 
+#35. Search Insert Position
+def search_insert(nums, target):
+    left, right = 0, len(nums)-1
+
+    while left <= right:
+        pivot = (left+right)//2
+        if nums[pivot] == target:
+            return pivot
+        elif nums[pivot]>target:
+            right = pivot-1
+        else:
+            left = pivot+1
+
+    return left
+
+def search_insert_recursive(nums, target, left, right):
+
+    if left <= right:
+        pivot = (left+right)//2
+        if nums[pivot] == target:
+            return pivot
+        elif nums[pivot] > target:
+            return search_insert_recursive(nums, target, left, pivot-1)
+        else:
+            return search_insert_recursive(nums, target, pivot+1, right)
+    else:
+        return left
+
+def search_insert_wrapper(nums, target):
+    return search_insert_recursive(nums, target, 0, len(nums)-1)
+
+
+
+
 if __name__ == '__main__':
-    nums = [2, 2, 1]
+    #nums = [2, 2, 1]
     #print(single_number(nums))
-    obj = MinStack()
-    obj.push(2)
+    #obj = MinStack()
+    #obj.push(2)
     #obj.push(3)
-    obj.pop()
-    param_3 = obj.top()
-    param_4 = obj.getMin()
+    #obj.pop()
+    #param_3 = obj.top()
+    #param_4 = obj.getMin()
     #print(climb_stairs(45))
-    head = [1, 2, 3, 4, 5]
-    myLinkedList = LinkedList()
-    myLinkedList.append_node(1)
-    myLinkedList.append_node(2)
-    myLinkedList.append_node(3)
-    myLinkedList.append_node(4)
-    myLinkedList.append_node(5)
-    print("Original Linked List")
-    myLinkedList.print_linked_list()
-    myLinkedList.reverseList()
-    print("Reversed Linked List")
-    myLinkedList.print_linked_list()
-    nums = [-1,1,1,1,2,1]
-    print(majority_element(nums))
+    #head = [1, 2, 3, 4, 5]
+
+    #nums = [-1,1,1,1,2,1]
+    #print(majority_element_hash_map(nums))
+    nums = [1, 2, 4, 5, 8, 10]
+    target = 7
+    #print(search_insert(nums, target))
+    print(search_insert_wrapper(nums, target))
