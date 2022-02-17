@@ -141,7 +141,21 @@ def search_insert_recursive(nums, target, left, right):
 def search_insert_wrapper(nums, target):
     return search_insert_recursive(nums, target, 0, len(nums)-1)
 
+#448. Find All Numbers Disappeared in an Array
+# T: O(N), S: O(N)
+def find_disappeared_numbers(nums):
 
+    hash_map = {}
+    out_list = []
+    for num in nums:
+        hash_map[num] = 1
+    for num in range(1, len(nums)+1):
+        if num not in hash_map:
+            out_list.append(num)
+
+    nums = sorted(nums)
+
+    return out_list
 
 
 if __name__ == '__main__':
@@ -158,7 +172,10 @@ if __name__ == '__main__':
 
     #nums = [-1,1,1,1,2,1]
     #print(majority_element_hash_map(nums))
-    nums = [1, 2, 4, 5, 8, 10]
-    target = 7
+    #nums = [1, 2, 4, 5, 8, 10]
+    #target = 7
     #print(search_insert(nums, target))
-    print(search_insert_wrapper(nums, target))
+    #print(search_insert_wrapper(nums, target))
+    nums = [4, 3, 2, 7, 8, 2, 3, 1]
+    print(find_disappeared_numbers(nums))
+    #print([i for i in range(1, len(nums)+1)])
