@@ -4,6 +4,7 @@
 #206. Reverse Linked List
 #169. Majority Element
 #35. Search Insert Position
+#389. Find the Difference
 
 from collections import Counter
 import math
@@ -157,6 +158,14 @@ def find_disappeared_numbers(nums):
 
     return out_list
 
+def find_the_difference(s, t):
+    hash_map = Counter(s)
+    for c in t:
+        if c not in hash_map or hash_map[c] == 0:
+            return c
+        else:
+            hash_map[c] -= 1
+
 
 if __name__ == '__main__':
     #nums = [2, 2, 1]
@@ -176,6 +185,9 @@ if __name__ == '__main__':
     #target = 7
     #print(search_insert(nums, target))
     #print(search_insert_wrapper(nums, target))
-    nums = [4, 3, 2, 7, 8, 2, 3, 1]
-    print(find_disappeared_numbers(nums))
+    #nums = [4, 3, 2, 7, 8, 2, 3, 1]
+    #print(find_disappeared_numbers(nums))
     #print([i for i in range(1, len(nums)+1)])
+    s = "abcd"
+    t = "abcde"
+    print(find_the_difference(s, t))
