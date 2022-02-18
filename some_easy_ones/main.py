@@ -5,6 +5,7 @@
 #169. Majority Element
 #35. Search Insert Position
 #389. Find the Difference
+#258. Add Digits
 
 from collections import Counter
 import math
@@ -155,9 +156,9 @@ def find_disappeared_numbers(nums):
             out_list.append(num)
 
     nums = sorted(nums)
-
     return out_list
 
+#389. Find the Difference
 def find_the_difference(s, t):
     hash_map = Counter(s)
     for c in t:
@@ -166,6 +167,19 @@ def find_the_difference(s, t):
         else:
             hash_map[c] -= 1
 
+#258. Add Digits
+def add_digits(num):
+    # digits = [int(d) for d in str(num)]
+    # if sum(digits)<=  9:
+    #    return sum(digits)
+
+    # return self.addDigits(sum(digits))
+    if num == 0:
+        return 0
+    if not num % 9:
+        return 9
+    else:
+        return num % 9
 
 if __name__ == '__main__':
     #nums = [2, 2, 1]
