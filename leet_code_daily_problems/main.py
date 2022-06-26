@@ -2,6 +2,8 @@
 #3. Longest Substring Without Repeating Characters
 #215. Kth Largest Element in an Array
 #1642. Furthest Building You Can Reach
+#844. Backspace String Compare
+#581. Shortest Unsorted Continuous Subarray
 
 import heapq
 
@@ -100,6 +102,68 @@ def furthestBuilding2(heights, bricks, ladders):
     return hi  # Note that return lo would be equivalent.
 
 
+#844. Backspace String Compare
+def backspaceCompare(s, t):
+    arr_s = []
+    for c in s:
+        if c == '#':
+            if arr_s:
+                arr_s.pop()
+        else:
+            arr_s.append(c)
+
+    arr_t = []
+    for c in t:
+        if c == '#':
+            if arr_t:
+                arr_t.pop()
+        else:
+            arr_t.append(c)
+
+    return arr_s == arr_t
+
+
+#581. Shortest Unsorted Continuous Subarray
+def findUnsortedSubarray(nums):
+    stack = []
+    left_id = len(nums) - 1
+    right_id = 0
+
+    for i, val in enumerate(nums):
+        if (not stack or stack[-1][1] <= val):
+            stack.append((i, val))
+        elif stack and stack[-1][1] > val:
+            pop_val = stack.pop()
+            left_id = min(left_id, pop_val[0])
+            while stack:
+                if stack[-1][1] <= val:
+                    break
+                else:
+                    pop_val = stack.pop()
+                    left_id = min(left_id, pop_val[0])
+
+    stack = []
+
+    for i, val in reversed(list(enumerate(nums))):
+
+        if (not stack or stack[-1][1] >= val):
+            stack.append((i, val))
+        elif stack and stack[-1][1] < val:
+            pop_val = stack.pop()
+            right_id = max(right_id, pop_val[0])
+            while stack:
+                if stack[-1][1] >= val:
+                    break
+                else:
+                    pop_val = stack.pop()
+                    right_id = max(right_id, pop_val[0])
+
+    if right_id - left_id > 0:
+        return right_id - left_id + 1
+    else:
+        return 0
+
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -128,3 +192,13 @@ if __name__ == '__main__':
     #bricks = 0
     #ladders = 0
     print(furthestBuilding2(heights, bricks, ladders))
+    s = "ab#c"
+    t = "ad#c"
+    s = "ab##"
+    t = "c#d#"
+    s = "a#c"
+    t = "b"
+    print(backspaceCompare(s, t))
+    nums = [2,6,4,8,10,9,15]
+    #nums = [1,2,3,4]
+    print(findUnsortedSubarray(nums))
