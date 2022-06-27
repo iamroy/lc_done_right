@@ -4,6 +4,7 @@
 #1642. Furthest Building You Can Reach
 #844. Backspace String Compare
 #581. Shortest Unsorted Continuous Subarray
+#1209. Remove All Adjacent Duplicates in String II
 
 import heapq
 
@@ -164,6 +165,33 @@ def findUnsortedSubarray(nums):
         return 0
 
 
+#1209. Remove All Adjacent Duplicates in String II
+def removeDuplicates(s, k):
+
+    stack = []
+    for c in s:
+        if not stack:
+            stack.append((1, c))
+        elif stack[-1][1] == c:
+            if stack[-1][0] == k-1:
+                j = k-1
+                while j>0:
+
+                    stack.pop()
+                    j -= 1
+            else:
+                stack.append((stack[-1][0]+1, c))
+        else:
+            stack.append((1, c))
+
+    out_arr = ''
+    for c in stack:
+        out_arr += c[1]
+    return out_arr
+
+
+
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -202,3 +230,10 @@ if __name__ == '__main__':
     nums = [2,6,4,8,10,9,15]
     #nums = [1,2,3,4]
     print(findUnsortedSubarray(nums))
+    s = "abcd"
+    k = 2
+    #s = "deeedbbcccbdaa"
+    #k = 3
+    #s = "pbbcggttciiippooaais"
+    #k = 2
+    print(removeDuplicates(s, k))
