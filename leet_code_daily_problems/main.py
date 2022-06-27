@@ -5,6 +5,7 @@
 #844. Backspace String Compare
 #581. Shortest Unsorted Continuous Subarray
 #1209. Remove All Adjacent Duplicates in String II
+#456. 132 Pattern
 
 import heapq
 
@@ -190,6 +191,52 @@ def removeDuplicates(s, k):
     return out_arr
 
 
+#456. 132 Pattern
+def find132pattern(nums):
+
+    exclude_start = []
+    for i in range(len(nums)-1):
+
+        if i in exclude_start:
+            continue
+
+        stack = []
+        for j in range(i+1, len(nums)):
+            if not stack:
+                if nums[j]>nums[i]:
+                    stack.append(nums[j])
+            elif stack[-1]>nums[j] and nums[j]>nums[i]:
+                    return True
+            elif stack[-1]<nums[j]:
+                stack.append(nums[j])
+
+        exclude_start = exclude_start+stack
+
+    return False
+
+
+def find132pattern2(nums):
+
+    min_arr = []
+    min_arr.append(nums[0])
+    for i in range(1, len(nums)):
+        min_arr.append(min(min_arr[i-1], nums[i]))
+
+    print(min_arr)
+    stack = []
+    for i in range(len(nums)-1, -1, -1):
+        if not stack or stack[-1]>nums[i]:
+            stack.append(nums[i])
+        elif stack[-1]<nums[i]:
+            print(stack)
+            while stack and stack[-1]<nums[i]:
+                if min_arr[i]>=stack[-1]:
+                    stack.pop()
+                elif min_arr[i]<stack[-1]:
+                    return True
+            stack.append(nums[i])
+
+    return False
 
 
 if __name__ == '__main__':
@@ -237,3 +284,11 @@ if __name__ == '__main__':
     #s = "pbbcggttciiippooaais"
     #k = 2
     print(removeDuplicates(s, k))
+    nums = [1, 2, 3, 4]
+    #nums = [3, 1, 4, 2]
+    #nums = [-1, 3, 2, 0]
+    #nums = [3, 5, 0, 3, 4, 2]
+    #nums = [1,-4,2,-1,3,-3,-4,0,-3,-1]
+    nums = [-2,1,1,-2,1,1]
+    #nums = [2,4,3,1]
+    print(find132pattern2(nums))
