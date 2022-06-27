@@ -6,8 +6,11 @@
 #581. Shortest Unsorted Continuous Subarray
 #1209. Remove All Adjacent Duplicates in String II
 #456. 132 Pattern
+#1658. Minimum Operations to Reduce X to Zero
+#209. Minimum Size Subarray Sum
 
 import heapq
+import sys
 
 #3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(s):
@@ -238,6 +241,57 @@ def find132pattern2(nums):
 
     return False
 
+#1658. Minimum Operations to Reduce X to Zero
+def minOperations(nums, x):
+
+    if x<0:
+        return -1
+
+    if len(nums) == 1 and nums[0] != x:
+        return -1
+
+    if nums[0] == x or nums[-1] == x:
+        return 1
+
+    right_side = minOperations(nums[:-1], x - nums[-1])
+    left_side = minOperations(nums[1:], x - nums[0])
+
+    if right_side>0 and left_side>0:
+        return min(right_side+1, left_side+1)
+
+    if right_side>0:
+        return right_side+1
+
+    if left_side>0:
+        return left_side+1
+
+    return -1
+
+
+#209. Minimum Size Subarray Sum
+def minSubArrayLen(target, nums):
+
+    #prefix_sum = [sum(nums[ : i + 1]) for i in range(len(nums))]
+    #if target > max(prefix_sum):
+    #    return 0
+
+    min_len = sys.maxsize
+    left = 0
+    tmp_sum = 0
+
+
+    for i in range(len(nums)):
+        tmp_sum += nums[i]
+        while tmp_sum>=target:
+            min_len = min(min_len, i+1-left)
+            tmp_sum -= nums[left]
+            left += 1
+
+    if sum(nums)<target:
+        return 0
+    else:
+        return min_len
+
 
 if __name__ == '__main__':
     s = "dvdf"
@@ -266,29 +320,43 @@ if __name__ == '__main__':
     #heights = [7,5,13]
     #bricks = 0
     #ladders = 0
-    print(furthestBuilding2(heights, bricks, ladders))
+    #print(furthestBuilding2(heights, bricks, ladders))
     s = "ab#c"
     t = "ad#c"
     s = "ab##"
     t = "c#d#"
     s = "a#c"
     t = "b"
-    print(backspaceCompare(s, t))
+    #print(backspaceCompare(s, t))
     nums = [2,6,4,8,10,9,15]
     #nums = [1,2,3,4]
-    print(findUnsortedSubarray(nums))
-    s = "abcd"
-    k = 2
+    #print(findUnsortedSubarray(nums))
+    #s = "abcd"
+    #k = 2
     #s = "deeedbbcccbdaa"
     #k = 3
     #s = "pbbcggttciiippooaais"
     #k = 2
-    print(removeDuplicates(s, k))
-    nums = [1, 2, 3, 4]
+    #print(removeDuplicates(s, k))
+    #nums = [1, 2, 3, 4]
     #nums = [3, 1, 4, 2]
     #nums = [-1, 3, 2, 0]
     #nums = [3, 5, 0, 3, 4, 2]
     #nums = [1,-4,2,-1,3,-3,-4,0,-3,-1]
-    nums = [-2,1,1,-2,1,1]
+    #nums = [-2,1,1,-2,1,1]
     #nums = [2,4,3,1]
-    print(find132pattern2(nums))
+    #print(find132pattern2(nums))
+    #nums = [1, 1, 4, 2, 3]
+    #x = 5
+    #nums = [5, 6, 7, 8, 9]
+    #x = 4
+    #nums = [3, 2, 20, 1, 1, 3]
+    #x = 10
+    #print(minOperations(nums, x))
+    nums = [2,3,1,2,4,3]
+    target = 7
+    #nums = [1,4,4]
+    #target = 4
+    #nums = [1,1,1,1,1,1,1,1]
+    #target = 11
+    print(minSubArrayLen(target, nums))
