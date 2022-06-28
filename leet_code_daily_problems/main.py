@@ -8,6 +8,7 @@
 #456. 132 Pattern
 #1658. Minimum Operations to Reduce X to Zero
 #209. Minimum Size Subarray Sum
+#525. Contiguous Array
 
 import heapq
 import sys
@@ -293,6 +294,27 @@ def minSubArrayLen(target, nums):
         return min_len
 
 
+#525. Contiguous Array
+def findMaxLength(nums):
+
+    hash_map = {0 : -1}
+    max_len = 0
+    counter = 0
+
+    for i, val in enumerate(nums):
+        if val == 0:
+            counter -= 1
+        else:
+            counter += 1
+
+        if counter not in hash_map.keys():
+            hash_map[counter] = i
+        else:
+            max_len = max(max_len, i-hash_map[counter])
+
+    return max_len
+
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -353,10 +375,12 @@ if __name__ == '__main__':
     #nums = [3, 2, 20, 1, 1, 3]
     #x = 10
     #print(minOperations(nums, x))
-    nums = [2,3,1,2,4,3]
-    target = 7
+    #nums = [2,3,1,2,4,3]
+    #target = 7
     #nums = [1,4,4]
     #target = 4
     #nums = [1,1,1,1,1,1,1,1]
     #target = 11
-    print(minSubArrayLen(target, nums))
+    #print(minSubArrayLen(target, nums))
+    nums = [0,0,1,0,0,0,1,1]
+    print(findMaxLength(nums))
