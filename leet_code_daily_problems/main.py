@@ -9,6 +9,7 @@
 #1658. Minimum Operations to Reduce X to Zero
 #209. Minimum Size Subarray Sum
 #525. Contiguous Array
+#325. Maximum Size Subarray Sum Equals k
 
 import heapq
 import sys
@@ -283,14 +284,9 @@ def minOperations2(nums, x):
 #209. Minimum Size Subarray Sum
 def minSubArrayLen(target, nums):
 
-    #prefix_sum = [sum(nums[ : i + 1]) for i in range(len(nums))]
-    #if target > max(prefix_sum):
-    #    return 0
-
     min_len = sys.maxsize
     left = 0
     tmp_sum = 0
-
 
     for i in range(len(nums)):
         tmp_sum += nums[i]
@@ -324,6 +320,30 @@ def findMaxLength(nums):
             max_len = max(max_len, i-hash_map[counter])
 
     return max_len
+
+
+#325. Maximum Size Subarray Sum Equals k
+def maxSubArrayLen(nums, k):
+    max_len = 0
+    current = 0
+    n = len(nums)
+    sum_dict = {}
+
+    for l in range(n):
+        current += nums[l]
+
+        if current not in sum_dict.keys():
+            sum_dict[current] = l
+
+        if current == k:
+            max_len = max(max_len, l + 1)
+
+        if current - k in sum_dict.keys():
+            max_len = max(max_len, l - sum_dict[current - k])
+
+    return max_len
+
+
 
 
 if __name__ == '__main__':
@@ -379,16 +399,16 @@ if __name__ == '__main__':
     #nums = [-2,1,1,-2,1,1]
     #nums = [2,4,3,1]
     #print(find132pattern2(nums))
-    nums = [1, 1, 4, 2, 3]
-    x = 5
-    nums = [5, 6, 7, 8, 9]
-    x = 4
-    nums = [3, 2, 20, 1, 1, 3]
-    x = 10
-    nums = [1, 1]
-    x = 3
-    print(minOperations(nums, x))
-    print(minOperations2(nums, x))
+    #nums = [1, 1, 4, 2, 3]
+    #x = 5
+    #nums = [5, 6, 7, 8, 9]
+    #x = 4
+    #nums = [3, 2, 20, 1, 1, 3]
+    #x = 10
+    #nums = [1, 1]
+    #x = 3
+    #print(minOperations(nums, x))
+    #print(minOperations2(nums, x))
     #nums = [2,3,1,2,4,3]
     #target = 7
     #nums = [1,4,4]
@@ -398,3 +418,8 @@ if __name__ == '__main__':
     #print(minSubArrayLen(target, nums))
     #nums = [0,0,1,0,0,0,1,1]
     #print(findMaxLength(nums))
+    nums = [1, -1, 5, -2, 3]
+    k = 3
+    #nums = [-2, -1, 2, 1]
+    #k = 1
+    print(maxSubArrayLen(nums, k))
