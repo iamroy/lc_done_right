@@ -10,6 +10,8 @@
 #209. Minimum Size Subarray Sum
 #525. Contiguous Array
 #325. Maximum Size Subarray Sum Equals k
+#713. Subarray Product Less Than K
+#462. Minimum Moves to Equal Array Elements II
 
 import heapq
 import sys
@@ -344,6 +346,36 @@ def maxSubArrayLen(nums, k):
     return max_len
 
 
+#713. Subarray Product Less Than K
+def numSubarrayProductLessThanK(nums, k):
+    if k <= 1: return 0
+    prod = 1
+    ans = left = 0
+    for right, val in enumerate(nums):
+        prod *= val
+        while prod >= k:
+            prod /= nums[left]
+            left += 1
+        ans += right - left + 1
+    return ans
+
+
+#462. Minimum Moves to Equal Array Elements II
+def minMoves2(nums):
+
+    nums = sorted(nums)
+    # find the median
+    if len(nums) % 2 != 0:
+        # total number of values are odd
+        # subtract 1 since indexing starts at 0
+        m = int((len(nums) + 1) / 2 - 1)
+        median_val = nums[m]
+    else:
+        m1 = int(len(nums) / 2 - 1)
+        m2 = int(len(nums) / 2)
+        median_val = (nums[m1] + nums[m2]) / 2
+
+    return int(sum([abs(x - median_val) for x in nums]))
 
 
 if __name__ == '__main__':
@@ -418,8 +450,17 @@ if __name__ == '__main__':
     #print(minSubArrayLen(target, nums))
     #nums = [0,0,1,0,0,0,1,1]
     #print(findMaxLength(nums))
-    nums = [1, -1, 5, -2, 3]
-    k = 3
+    #nums = [1, -1, 5, -2, 3]
+    #k = 3
     #nums = [-2, -1, 2, 1]
     #k = 1
-    print(maxSubArrayLen(nums, k))
+    #print(maxSubArrayLen(nums, k))
+    nums = [10, 5, 2, 6]
+    k = 100
+    nums = [1, 2, 3]
+    k = 0
+    nums = [1,1,1]
+    k = 2
+    print(numSubarrayProductLessThanK(nums, k))
+    nums = [1, 2, 3]
+    print(minMoves2(nums))
