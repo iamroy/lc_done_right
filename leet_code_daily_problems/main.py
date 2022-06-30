@@ -243,31 +243,42 @@ def find132pattern2(nums):
     return False
 
 #1658. Minimum Operations to Reduce X to Zero
+## direct sum
 def minOperations(nums, x):
 
-    if x<0:
-        return -1
+    min_len = sys.maxsize
+    n = len(nums)
+    l = 0
+    current = sum(nums)
 
-    if len(nums) == 1 and nums[0] != x:
-        return -1
+    for r in range(n):
+        current -= nums[r]
+        while current<x and l<=r:
+            current += nums[l]
+            l += 1
+        if current == x:
+            min_len = min(min_len, l+n-r-1)
 
-    if nums[0] == x or nums[-1] == x:
-        return 1
+    return min_len if min_len != sys.maxsize else  -1
 
-    right_side = minOperations(nums[:-1], x - nums[-1])
-    left_side = minOperations(nums[1:], x - nums[0])
+## indirect sum
+def minOperations2(nums, x):
 
-    if right_side>0 and left_side>0:
-        return min(right_side+1, left_side+1)
+    n = len(nums)
+    subarray_sum = sum(nums)-x
+    max_len = -sys.maxsize
+    l = 0
+    current = 0
 
-    if right_side>0:
-        return right_side+1
+    for r in range(n):
+        current += nums[r]
+        while current>subarray_sum and l<=r:
+            current -= nums[l]
+            l += 1
+        if current == subarray_sum:
+            max_len = max(max_len, r-l+1)
 
-    if left_side>0:
-        return left_side+1
-
-    return -1
-
+    return n-max_len if max_len != -sys.maxsize else  -1
 
 #209. Minimum Size Subarray Sum
 def minSubArrayLen(target, nums):
@@ -368,13 +379,16 @@ if __name__ == '__main__':
     #nums = [-2,1,1,-2,1,1]
     #nums = [2,4,3,1]
     #print(find132pattern2(nums))
-    #nums = [1, 1, 4, 2, 3]
-    #x = 5
-    #nums = [5, 6, 7, 8, 9]
-    #x = 4
-    #nums = [3, 2, 20, 1, 1, 3]
-    #x = 10
-    #print(minOperations(nums, x))
+    nums = [1, 1, 4, 2, 3]
+    x = 5
+    nums = [5, 6, 7, 8, 9]
+    x = 4
+    nums = [3, 2, 20, 1, 1, 3]
+    x = 10
+    nums = [1, 1]
+    x = 3
+    print(minOperations(nums, x))
+    print(minOperations2(nums, x))
     #nums = [2,3,1,2,4,3]
     #target = 7
     #nums = [1,4,4]
@@ -382,5 +396,5 @@ if __name__ == '__main__':
     #nums = [1,1,1,1,1,1,1,1]
     #target = 11
     #print(minSubArrayLen(target, nums))
-    nums = [0,0,1,0,0,0,1,1]
-    print(findMaxLength(nums))
+    #nums = [0,0,1,0,0,0,1,1]
+    #print(findMaxLength(nums))
