@@ -2,6 +2,9 @@
 # Leet Code 498 def findDiagonalOrder(mat)
 # Leet Code 54 def spiralOrder(matrix)
 # Leet Code 118 def generate_pascals_triangle(num_rows)
+# Leet Code 1465 Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
+
+import math
 
 def dominantIndex(nums):
     max_val = max(nums)
@@ -140,6 +143,35 @@ def generate_pascals_triangle(num_rows):
     return out_list
 
 
+def maxArea(h, w, horizontalCuts, verticalCuts):
+    MOD = 10**9+7
+    horizontalCuts = sorted(horizontalCuts)
+    verticalCuts = sorted(verticalCuts)
+    horizontalCuts.append(h)
+    verticalCuts.append(w)
+
+    maxH = horizontalCuts[0]
+    maxW = verticalCuts[0]
+
+    prev = horizontalCuts[0]
+
+    for i in range(1, len(horizontalCuts)):
+        h = horizontalCuts[i]-prev
+        if h>maxH:
+            maxH = h
+        prev = horizontalCuts[i]
+
+    prev = verticalCuts[0]
+    for i in range(1, len(verticalCuts)):
+        w = verticalCuts[i] - prev
+        if w > maxW:
+            maxW = w
+        prev = verticalCuts[i]
+
+    return maxH*maxW%MOD
+
+
+
 if __name__ == '__main__':
     nums = [9]
     #print(dominantIndex(nums))
@@ -148,5 +180,15 @@ if __name__ == '__main__':
     #mat = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
     #print(findDiagonalOrder(mat))
     #print(spiralOrder(mat))
-    print(generate_pascals_triangle(5))
+    #print(generate_pascals_triangle(5))
+
+    #h = 5
+    #w= 4
+    #horizontalCuts = [1, 2, 4]
+    #verticalCuts = [1, 3]
+    h = 5
+    w = 4
+    horizontalCuts = [3]
+    verticalCuts = [3]
+    print(maxArea(h, w, horizontalCuts, verticalCuts))
 
