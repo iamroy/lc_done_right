@@ -15,6 +15,7 @@
 
 import heapq
 import sys
+from collections import Counter
 
 #3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(s):
@@ -485,7 +486,23 @@ def longestSubarray3(A):
 
 
 def characterReplacement(s, k):
-    pass
+    max_len = 0
+    chars_dict = dict()
+    l, r = 0, 0
+    max_freq = 0
+
+    while r < len(s):
+        chars_dict[s[r]] = chars_dict.get(s[r], 0) + 1
+        max_freq = max(max_freq, chars_dict[s[r]])
+        if not max_freq + k >= r - l + 1:
+            chars_dict[s[l]] -= 1
+            l += 1
+        max_len = r - l + 1
+
+        r += 1
+
+    return max_len
+
 
 if __name__ == '__main__':
     s = "dvdf"
@@ -581,4 +598,10 @@ if __name__ == '__main__':
     nums = [0, 1, 1, 1, 0, 1, 1, 0, 1]
     #nums = [1,1,0,1]
     #nums = [1, 1, 1]
-    print(longestSubarray3(nums))
+    #print(longestSubarray3(nums))
+    s = "AABABBA"
+    k = 1
+
+    s = "ABBB"#"ABAB"
+    k = 1
+    print(characterReplacement(s,k))

@@ -2,7 +2,7 @@ import unittest
 from problem_set1 import *
 
 class TestLeetCodeFunctions(unittest.TestCase):
-    def test_add_fish_to_aquarium_success(self):
+    def test_min_sub_array_len_success(self):
         target = 7
         nums = [2, 3, 1, 2, 4, 3]
         expected = 2
@@ -19,6 +19,25 @@ class TestLeetCodeFunctions(unittest.TestCase):
         actual = minSubArrayLen(target, nums)
         self.assertEqual(actual, expected)
 
+
+    def test_character_replacement_success(self):
+        s = "ABAB"
+        k = 2
+        actual = characterReplacement(s, k)
+        expected = 4
+        self.assertEqual(actual, expected)
+        s = "AABABBA"
+        k = 1
+        actual = characterReplacement(s, k)
+        expected = 4
+        self.assertEqual(actual, expected)
+        s = "ABBB"
+        k = 1
+        actual = characterReplacement(s, k)
+        expected = 4
+        self.assertEqual(actual, expected)
+
 if __name__ == '__main__':
     obj = TestLeetCodeFunctions()
-    obj.test_add_fish_to_aquarium_success()
+    obj.test_min_sub_array_len_success()
+    obj.test_character_replacement_success()
