@@ -378,6 +378,115 @@ def minMoves2(nums):
     return int(sum([abs(x - median_val) for x in nums]))
 
 
+def minSubArrayLen(target, nums):
+
+    i, j, subset_sum = -1, 0, 0
+    min_len = len(nums)+1
+
+    while j<len(nums):
+        print(i,j,subset_sum, min_len)
+        if subset_sum<target:
+            subset_sum += nums[j]
+            j += 1
+        elif subset_sum == target:
+            if min_len<j-i:
+                min_len = j - i
+            i += 1
+            subset_sum -= nums[i]
+        else:
+            i += 1
+            subset_sum -= nums[i]
+
+    if min_len == len(nums):
+        min_len = 0
+
+    return min_len
+
+
+def totalFruit(fruits):
+    max_count = 0
+    fruit_basket = []
+
+    i,j,left_pos = 0,0,0
+    while i < len(fruits):
+        if fruits[i] not in fruit_basket:
+            if len(fruit_basket) == 2:
+                max_count = max(max_count, i - j)
+                j = left_pos
+                fruit_basket.pop(0)
+            left_pos = i
+        else:
+            if fruit_basket[0] == fruits[i]:
+                fruit_basket.pop(0)
+                left_pos = i
+            else:
+                fruit_basket.pop()
+
+        fruit_basket.append(fruits[i])
+        i += 1
+
+    max_count = max(max_count, i - j)
+
+    return max_count
+
+
+def longestSubarray(nums):
+    max_len = 0
+
+    done_zero_padding  = 0
+    if nums[0] != 0:
+        done_zero_padding = 1
+        nums.insert(0, 0)
+
+    if nums[-1] != 0:
+        done_zero_padding = 1
+        nums.append(0)
+
+    index = [i for i,x in enumerate(nums) if x == 0]
+    gap_list = [t - s - 1 for s, t in zip(index, index[1:])]
+    if len(gap_list)>1:
+        sum_list = [t + s for s, t in zip(gap_list, gap_list[1:])]
+    else:
+        if done_zero_padding == 1:
+            sum_list = [gap_list[0]-1]
+        else:
+            sum_list = gap_list
+
+    return max(max_len, max(sum_list))
+
+
+def longestSubarray2(nums):
+    previousRun = 0
+    currentRun = 0
+    best = 0
+    sawZero = False
+    for n in nums:
+        if n == 0:
+            previousRun = currentRun
+            currentRun = 0
+            sawZero = True
+        else:
+            currentRun += 1
+            best = max(best, previousRun + currentRun)
+    if sawZero == False:
+        best -= 1
+    return best
+
+def longestSubarray3(A):
+    k = 1
+    i = 0
+    for j in range(len(A)):
+        if A[j] == 0:
+             k -= 1
+        if k < 0:
+            k += A[i] == 0
+            i += 1
+    return j - i
+
+
+def characterReplacement(s, k):
+    pass
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -413,7 +522,7 @@ if __name__ == '__main__':
     s = "a#c"
     t = "b"
     #print(backspaceCompare(s, t))
-    nums = [2,6,4,8,10,9,15]
+    #nums = [2,6,4,8,10,9,15]
     #nums = [1,2,3,4]
     #print(findUnsortedSubarray(nums))
     #s = "abcd"
@@ -455,12 +564,21 @@ if __name__ == '__main__':
     #nums = [-2, -1, 2, 1]
     #k = 1
     #print(maxSubArrayLen(nums, k))
-    nums = [10, 5, 2, 6]
-    k = 100
-    nums = [1, 2, 3]
-    k = 0
-    nums = [1,1,1]
-    k = 2
-    print(numSubarrayProductLessThanK(nums, k))
-    nums = [1, 2, 3]
-    print(minMoves2(nums))
+    #nums = [10, 5, 2, 6]
+    #k = 100
+    #nums = [1, 2, 3]
+    #k = 0
+    #nums = [1,1,1]
+    #k = 2
+    #print(numSubarrayProductLessThanK(nums, k))
+    #nums = [1, 2, 3]
+    #print(minMoves2(nums))
+    target = 7
+    nums = [2, 3, 1, 1, 4, 3]
+    #print(minSubArrayLen(target, nums))
+    fruits = [3,3,3,1,2,1,1,2,3,3,4]#[1,2,3,2,2]#[0,1,2,2]#[1, 2, 1]
+    #print(totalFruit(fruits))
+    nums = [0, 1, 1, 1, 0, 1, 1, 0, 1]
+    #nums = [1,1,0,1]
+    #nums = [1, 1, 1]
+    print(longestSubarray3(nums))
