@@ -1,7 +1,7 @@
 
 #209: Minimum Size Subarray Sum
 #424: Longest Repeating Character Replacement
-#904
+#904: Fruit Into Baskets
 #1493
 #2213
 import sys
@@ -46,3 +46,24 @@ def characterReplacement(s, k):
         r += 1
 
     return max_len
+
+# O(n) time complexity, single traversal
+# O(m) space complexity, where m is number of unique fruits
+def totalFruit(fruits) :
+    fruit_basket = dict()
+    max_count = 0
+    l = 0
+
+    for r in range(len(fruits)):
+        fruit_basket[fruits[r]] = fruit_basket.get(fruits[r], 0) + 1
+        if len(fruit_basket.keys()) <= 2:
+            max_count = max(max_count, r - l + 1)
+        else:
+            fruit_basket[fruits[l]] -= 1
+
+            if fruit_basket[fruits[l]] == 0:
+                fruit_basket.pop(fruits[l])
+
+            l += 1
+
+    return max_count

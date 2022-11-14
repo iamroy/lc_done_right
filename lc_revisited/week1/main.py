@@ -2,6 +2,7 @@ import unittest
 from problem_set1 import *
 
 class TestLeetCodeFunctions(unittest.TestCase):
+
     def test_min_sub_array_len_success(self):
         target = 7
         nums = [2, 3, 1, 2, 4, 3]
@@ -37,7 +38,26 @@ class TestLeetCodeFunctions(unittest.TestCase):
         expected = 4
         self.assertEqual(actual, expected)
 
+    def test_total_fruit_success(self):
+        fruits = [1,2,1]
+        actual = totalFruit(fruits)
+        expected = 3
+        self.assertEqual(actual, expected)
+        fruits = [0,1,2,2]
+        actual = totalFruit(fruits)
+        expected = 3
+        self.assertEqual(actual, expected)
+        fruits = [1,2,3,2,2]
+        actual = totalFruit(fruits)
+        expected = 4
+        self.assertEqual(actual, expected)
+        fruits = [3,3,3,1,2,1,1,2,3,3,4]
+        actual = totalFruit(fruits)
+        expected = 5
+        self.assertEqual(actual, expected)
+
 if __name__ == '__main__':
     obj = TestLeetCodeFunctions()
     obj.test_min_sub_array_len_success()
     obj.test_character_replacement_success()
+    obj.test_total_fruit_success()

@@ -504,6 +504,27 @@ def characterReplacement(s, k):
     return max_len
 
 
+def totalFruit2(fruits):
+    fruit_basket = dict()
+    max_count = 0
+    l = 0
+
+    for r in range(len(fruits)):
+        fruit_basket[fruits[r]] = fruit_basket.get(fruits[r], 0) + 1
+
+        if len(fruit_basket.keys()) <= 2:
+            max_count = max(max_count, r-l+1)
+        else:
+            fruit_basket[fruits[l]] -= 1
+
+            if fruit_basket[fruits[l]] == 0:
+                fruit_basket.pop(fruits[l])
+
+            l += 1
+
+    return max_count
+
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -594,7 +615,7 @@ if __name__ == '__main__':
     nums = [2, 3, 1, 1, 4, 3]
     #print(minSubArrayLen(target, nums))
     fruits = [3,3,3,1,2,1,1,2,3,3,4]#[1,2,3,2,2]#[0,1,2,2]#[1, 2, 1]
-    #print(totalFruit(fruits))
+    print(totalFruit2(fruits))
     nums = [0, 1, 1, 1, 0, 1, 1, 0, 1]
     #nums = [1,1,0,1]
     #nums = [1, 1, 1]
@@ -604,4 +625,4 @@ if __name__ == '__main__':
 
     s = "ABBB"#"ABAB"
     k = 1
-    print(characterReplacement(s,k))
+    #print(characterReplacement(s,k))
