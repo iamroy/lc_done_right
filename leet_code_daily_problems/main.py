@@ -12,6 +12,11 @@
 #325. Maximum Size Subarray Sum Equals k
 #713. Subarray Product Less Than K
 #462. Minimum Moves to Equal Array Elements II
+#159. Longest Substring with At Most Two Distinct Characters
+#1151. Minimum Swaps to Group All 1's Together
+#1423. Maximum Points You Can Obtain from Cards
+#1004. Max Consecutive Ones III
+
 
 import heapq
 import sys
@@ -379,150 +384,170 @@ def minMoves2(nums):
     return int(sum([abs(x - median_val) for x in nums]))
 
 
-def minSubArrayLen(target, nums):
-
-    i, j, subset_sum = -1, 0, 0
-    min_len = len(nums)+1
-
-    while j<len(nums):
-        print(i,j,subset_sum, min_len)
-        if subset_sum<target:
-            subset_sum += nums[j]
-            j += 1
-        elif subset_sum == target:
-            if min_len<j-i:
-                min_len = j - i
-            i += 1
-            subset_sum -= nums[i]
-        else:
-            i += 1
-            subset_sum -= nums[i]
-
-    if min_len == len(nums):
-        min_len = 0
-
-    return min_len
-
-
-def totalFruit(fruits):
+#159. Longest Substring with At Most Two Distinct Characters
+def lengthOfLongestSubstringTwoDistinct(s):
+    substr_dict = dict()
     max_count = 0
-    fruit_basket = []
+    l=0
 
-    i,j,left_pos = 0,0,0
-    while i < len(fruits):
-        if fruits[i] not in fruit_basket:
-            if len(fruit_basket) == 2:
-                max_count = max(max_count, i - j)
-                j = left_pos
-                fruit_basket.pop(0)
-            left_pos = i
+    for r in range(len(s)):
+        substr_dict[s[r]] = substr_dict.get(s[r], 0) + 1
+
+        if len(substr_dict.keys()) <= 2:
+            max_count = max(max_count, r - l + 1)
         else:
-            if fruit_basket[0] == fruits[i]:
-                fruit_basket.pop(0)
-                left_pos = i
-            else:
-                fruit_basket.pop()
+            substr_dict[s[l]] -= 1
 
-        fruit_basket.append(fruits[i])
-        i += 1
+            if substr_dict[s[l]] == 0:
+                substr_dict.pop(s[l])
 
-    max_count = max(max_count, i - j)
+            l += 1
 
     return max_count
 
+#1151. Minimum Swaps to Group All 1's Together
+def minSwaps(data):
+    l,r = 0,0
+    min_swap_counter = sys.maxsize
+    zero_counter = 0
 
-def longestSubarray(nums):
-    max_len = 0
+    one_count = sum(data)
 
-    done_zero_padding  = 0
-    if nums[0] != 0:
-        done_zero_padding = 1
-        nums.insert(0, 0)
+    while r < len(data):
+        if not data[r]:
+            zero_counter += 1
 
-    if nums[-1] != 0:
-        done_zero_padding = 1
-        nums.append(0)
-
-    index = [i for i,x in enumerate(nums) if x == 0]
-    gap_list = [t - s - 1 for s, t in zip(index, index[1:])]
-    if len(gap_list)>1:
-        sum_list = [t + s for s, t in zip(gap_list, gap_list[1:])]
-    else:
-        if done_zero_padding == 1:
-            sum_list = [gap_list[0]-1]
-        else:
-            sum_list = gap_list
-
-    return max(max_len, max(sum_list))
-
-
-def longestSubarray2(nums):
-    previousRun = 0
-    currentRun = 0
-    best = 0
-    sawZero = False
-    for n in nums:
-        if n == 0:
-            previousRun = currentRun
-            currentRun = 0
-            sawZero = True
-        else:
-            currentRun += 1
-            best = max(best, previousRun + currentRun)
-    if sawZero == False:
-        best -= 1
-    return best
-
-def longestSubarray3(A):
-    k = 1
-    i = 0
-    for j in range(len(A)):
-        if A[j] == 0:
-             k -= 1
-        if k < 0:
-            k += A[i] == 0
-            i += 1
-    return j - i
-
-
-def characterReplacement(s, k):
-    max_len = 0
-    chars_dict = dict()
-    l, r = 0, 0
-    max_freq = 0
-
-    while r < len(s):
-        chars_dict[s[r]] = chars_dict.get(s[r], 0) + 1
-        max_freq = max(max_freq, chars_dict[s[r]])
-        if not max_freq + k >= r - l + 1:
-            chars_dict[s[l]] -= 1
+        if r-l+1 == one_count:
+            min_swap_counter = min(min_swap_counter, zero_counter)
+            if not data[l]:
+                zero_counter -= 1
             l += 1
-        max_len = r - l + 1
 
         r += 1
+
+    return min_swap_counter
+
+#3
+def lengthOfLongestSubstring2(s) -> int:
+    start = 0
+    max_len = 0
+    seen_dict = dict()
+    for end in range(len(s)):
+
+        seen_dict[s[end]] = seen_dict.get(s[end], 0) + 1
+
+        if max(seen_dict.values()) == 1:
+            max_len = max(max_len, len(seen_dict.keys()))
+        else:
+            seen_dict[s[start]] -= 1
+            if seen_dict[s[start]] == 0:
+                seen_dict.pop(s[start])
+            start += 1
 
     return max_len
 
 
-def totalFruit2(fruits):
-    fruit_basket = dict()
-    max_count = 0
-    l = 0
+#487
+def findMaxConsecutiveOnes(data) -> int:
+    zero_id  = -1
+    max_len = 0
+    start = 0
 
-    for r in range(len(fruits)):
-        fruit_basket[fruits[r]] = fruit_basket.get(fruits[r], 0) + 1
+    for end in range(len(data)):
+        if data[end] == 0:
 
-        if len(fruit_basket.keys()) <= 2:
-            max_count = max(max_count, r-l+1)
+            if zero_id != -1:
+                start = zero_id + 1
+            zero_id = end
+
+        max_len = max(max_len, end-start+1)
+
+    if zero_id == -1:
+        max_len = len(data)
+
+    return max_len
+
+
+#1695
+def maximumUniqueSubarray(nums) -> int:
+    seen = []
+    max_sum = 0
+    subarr_sum = 0
+
+    for end in range(len(nums)):
+
+        if nums[end] in seen:
+            while True:
+                popped_element = seen.pop(0)
+                subarr_sum -= popped_element
+                if popped_element == nums[end]:
+                    break
+
+        seen.append(nums[end])
+        subarr_sum += nums[end]
+
+        max_sum = max(max_sum, subarr_sum)
+
+    return max_sum
+
+
+#1423. Maximum Points You Can Obtain from Cards
+def maxScore(cardPoints, k) -> int:
+
+    rem_arr_len = len(cardPoints)-k
+    start = 0
+    end = start+rem_arr_len-1
+    sub_arr_sum = sum(cardPoints[:end+1])
+    min_sum = sub_arr_sum
+    end += 1
+
+    while end>=start and end < len(cardPoints):
+        sub_arr_sum = sub_arr_sum + cardPoints[end] - cardPoints[start]
+        min_sum = min(min_sum, sub_arr_sum)
+        end += 1
+        start += 1
+
+    max_sum = sum(cardPoints)-min_sum
+
+    return max_sum
+
+
+def mySqrt(x) -> int:
+
+    if x < 2:
+        return 1
+
+    left, right = 2, x // 2
+
+    while left <= right:
+        pivot = left + (right - left) // 2
+        num = pivot * pivot
+
+        if num > x:
+            right = pivot - 1
+        elif num < x:
+
+            left = pivot + 1
         else:
-            fruit_basket[fruits[l]] -= 1
+            return pivot
 
-            if fruit_basket[fruits[l]] == 0:
-                fruit_basket.pop(fruits[l])
+    return right
 
-            l += 1
 
-    return max_count
+#1004. Max Consecutive Ones III
+def longestOnes(nums, k) -> int:
+    start = 0
+
+    for end in range(len(nums)):
+        if nums[end] == 0:
+            k -= 1
+
+        if k < 0:
+            if nums[start] == 0:
+                k += 1
+            start += 1
+
+    return end-start+1
 
 
 if __name__ == '__main__':
@@ -532,7 +557,10 @@ if __name__ == '__main__':
     #s = "pwwkew"
     #s = " "
     #s = "abba"
+    #s = "qrsvbspk"
+    s = "tmmzuxt"
     #print(lengthOfLongestSubstring(s))
+    #print(lengthOfLongestSubstring2(s))
     nums = [3, 2, 1, 5, 6, 4]
     k = 2
     #nums = [3, 2, 3, 1, 2, 4, 5, 5, 6]
@@ -615,7 +643,7 @@ if __name__ == '__main__':
     nums = [2, 3, 1, 1, 4, 3]
     #print(minSubArrayLen(target, nums))
     fruits = [3,3,3,1,2,1,1,2,3,3,4]#[1,2,3,2,2]#[0,1,2,2]#[1, 2, 1]
-    print(totalFruit2(fruits))
+    #print(totalFruit2(fruits))
     nums = [0, 1, 1, 1, 0, 1, 1, 0, 1]
     #nums = [1,1,0,1]
     #nums = [1, 1, 1]
@@ -626,3 +654,31 @@ if __name__ == '__main__':
     s = "ABBB"#"ABAB"
     k = 1
     #print(characterReplacement(s,k))
+    s = "eceba"
+    #print(lengthOfLongestSubstringTwoDistinct(s))
+    data = [1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1]
+    #data = [1, 0, 1, 0, 1]
+    #data = [0, 0, 0, 1, 0]
+    #data = [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1]
+    #print(minSwaps(data))
+    nums = [1, 0, 1, 1, 0]
+    #nums = [1, 0, 1, 1, 0, 1]
+    #print(findMaxConsecutiveOnes(nums))
+    nums = [4, 2, 4, 5, 6]
+    nums = [5,2,1,2,5,2,1,2,5]
+    #print(maximumUniqueSubarray(nums))
+    cardPoints = [1, 2, 3, 4, 5, 6, 1]
+    k = 3
+    cardPoints = [2, 2, 2]
+    k = 2
+    cardPoints = [9, 7, 7, 9, 7, 7, 9]
+    k = 7
+    #print(maxScore(cardPoints, k))
+    #print(mySqrt(16))
+    nums = [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0]
+    k = 2
+    #nums = [0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1]
+    #k = 3
+    nums = [0,0,1,1,1,0,0]
+    k = 0
+    print(longestOnes(nums, k))
