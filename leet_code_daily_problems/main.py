@@ -16,8 +16,10 @@
 #1151. Minimum Swaps to Group All 1's Together
 #1423. Maximum Points You Can Obtain from Cards
 #1004. Max Consecutive Ones III
+#1235. Maximum Profit in Job Scheduling
 
 
+import bisect
 import heapq
 import sys
 from collections import Counter
@@ -550,6 +552,21 @@ def longestOnes(nums, k) -> int:
     return end-start+1
 
 
+#1235. Maximum Profit in Job Scheduling
+def jobScheduling(startTime, endTime, profit) -> int:
+
+    max_profit = [0] * (len(endTime))
+    jobs = sorted(list(zip(endTime, startTime, profit)))
+    S = [i[0] for i in jobs]
+
+    for id in range(len(jobs)):
+
+        id2 = bisect.bisect(S, jobs[id][1])-1
+        max_profit[id] = max(jobs[id][2] + max_profit[id2], max_profit[id-1])
+
+    return max(max_profit)
+
+
 if __name__ == '__main__':
     s = "dvdf"
     #s = "abcabcbb"
@@ -681,4 +698,17 @@ if __name__ == '__main__':
     #k = 3
     nums = [0,0,1,1,1,0,0]
     k = 0
-    print(longestOnes(nums, k))
+    #print(longestOnes(nums, k))
+    startTime = [1, 2, 3, 3]
+    endTime = [3, 4, 5, 6]
+    profit = [50, 10, 40, 70]
+    #startTime = [1, 2, 3, 4, 6]
+    #endTime = [3, 5, 10, 6, 9]
+    #profit = [20, 20, 100, 70, 60]
+    #startTime = [1, 1, 1]
+    #endTime = [2, 3, 4]
+    #profit = [5, 6, 4]
+    startTime = [4,2,4,8,2]
+    endTime = [5,5,5,10,8]
+    profit = [1,2,8,10,4]
+    print(jobScheduling(startTime, endTime, profit))
