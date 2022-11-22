@@ -56,8 +56,25 @@ class TestLeetCodeFunctions(unittest.TestCase):
         expected = 5
         self.assertEqual(actual, expected)
 
+
+    def test_longest_subarray_success(self):
+        nums = [1,1,0,1]
+        actual = longestSubarray(nums)
+        expected = 3
+        self.assertEqual(actual, expected)
+        nums = [0, 1, 1, 1, 0, 1, 1, 0, 1]
+        actual = longestSubarray(nums)
+        expected = 5
+        self.assertEqual(actual, expected)
+        nums = [1,1,1]
+        actual = longestSubarray(nums)
+        expected = 2
+        self.assertEqual(actual, expected)
+
+
 if __name__ == '__main__':
     obj = TestLeetCodeFunctions()
     obj.test_min_sub_array_len_success()
     obj.test_character_replacement_success()
     obj.test_total_fruit_success()
+    obj.test_longest_subarray_success()

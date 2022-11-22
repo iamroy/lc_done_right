@@ -2,7 +2,7 @@
 #209: Minimum Size Subarray Sum
 #424: Longest Repeating Character Replacement
 #904: Fruit Into Baskets
-#1493
+#1493: Longest Subarray of 1's After Deleting One
 #2213
 import sys
 
@@ -67,3 +67,25 @@ def totalFruit(fruits) :
             l += 1
 
     return max_count
+
+
+# O(n) time complexity, single traversal
+# O(1) space complexity
+def longestSubarray(A) -> int:
+
+    zero_count = 0
+    i= 0
+
+    for j in range(len(A)):
+        if A[j] == 0:
+            zero_count += 1
+        if zero_count > 1:
+            zero_count -= A[i] == 0
+            i += 1
+
+    return j-i
+
+
+
+
+
