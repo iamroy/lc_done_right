@@ -6,6 +6,7 @@
 #2213
 import sys
 
+#209: Minimum Size Subarray Sum
 # O(n) time complexity, single traversal
 # O(1) space complexity
 def minSubArrayLen(target, nums):
@@ -27,6 +28,7 @@ def minSubArrayLen(target, nums):
     return min_len
 
 
+#424: Longest Repeating Character Replacement
 # O(n) time complexity, single traversal
 # O(m) space complexity, where m is number of unique characters
 def characterReplacement(s, k):
@@ -47,6 +49,8 @@ def characterReplacement(s, k):
 
     return max_len
 
+
+#904: Fruit Into Baskets
 # O(n) time complexity, single traversal
 # O(m) space complexity, where m is number of unique fruits
 def totalFruit(fruits) :
@@ -69,6 +73,7 @@ def totalFruit(fruits) :
     return max_count
 
 
+#1493: Longest Subarray of 1's After Deleting One
 # O(n) time complexity, single traversal
 # O(1) space complexity
 def longestSubarray(A) -> int:
